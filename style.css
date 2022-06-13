@@ -65,3 +65,27 @@
 .text-indent{
     text-indent: 3.5em;
 }
+.image-detail{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+@media screen and (max-width: 768px) {
+    .size-img-card {
+        height: 10rem;
+    }
+    .overlay{
+        padding-top: 0.5em;
+    }
+    .image-recommend {
+        height: 10em;
+    }
+    .image-detail{
+        height: 15em;
+    }
+}
+@media screen and (max-width: 992px) {
+    .image-detail {
+            height: 15em;
+        }
+}
