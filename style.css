@@ -34,7 +34,6 @@
     object-fit: cover;
 }
 .overlay {
-    padding-top: 9em;
     border-radius: 0.2em;
     position: absolute;
     height: 100%;
@@ -72,7 +71,7 @@
 }
 @media screen and (max-width: 768px) {
     .size-img-card {
-        height: 10rem;
+        height: 11.5rem;
     }
     .overlay{
         padding-top: 0.5em;
@@ -88,4 +87,13 @@
     .image-detail {
             height: 15em;
         }
+}
+.contain{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    justify-content: center;
+}
+.width-100{
+    width: 100%;
 }
