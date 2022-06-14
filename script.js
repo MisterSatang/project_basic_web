@@ -5,18 +5,17 @@ function onload(){
     .then((response) => {
         return response.json()
     }).then(dataAnime => {
-        console.log(dataAnime)
-        animeList(dataAnime)
+        console.log(dataAnime.data)
+        animeList(dataAnime.data)
         // countSlidebar(dataAnime)
     })
 }
 function animeList(dataAnime){
-    console.log(dataAnime.data[1].title)
-    for(count=3;count<dataAnime.data.length;count++){
-        animeTable(count,dataAnime)
+    for(anime of dataAnime){
+        animeTable(anime)
     }
 }
-function animeTable(index,dataAnime){
+function animeTable(dataAnime){
     const display_all_anime = document.getElementById('display_all_anime')
     let col = document.createElement('div')
     col.classList.add('col-lg-2')
@@ -33,7 +32,7 @@ function animeTable(index,dataAnime){
     card.classList.add('blur')
     col.appendChild(card)
     let image = document.createElement('img')
-    image.setAttribute('src',dataAnime.data[index].images.jpg.large_image_url)
+    image.setAttribute('src',dataAnime.images.jpg.large_image_url)
     image.classList.add('card-img')
     image.classList.add('size-img-card')
     card.appendChild(image)
@@ -53,7 +52,7 @@ function animeTable(index,dataAnime){
     title.classList.add('card-text')
     title.classList.add('text')
     title.classList.add('text-center')
-    title.innerHTML = dataAnime.data[index].title
+    title.innerHTML = dataAnime.title
     card_body.appendChild(title)
     let btn_detail = document.createElement('button')
     btn_detail.classList.add('btn')
@@ -76,7 +75,7 @@ function animeTable(index,dataAnime){
     btn_favoite.innerHTML += 'Favorite'
     
     display_all_anime.appendChild(col)
-}
+// }
 // function countSlidebar(dataAnime){
 //     for(count=0;count<3;count++){
 //         animeSlidebar(count,dataAnime)
@@ -91,10 +90,10 @@ function animeTable(index,dataAnime){
 //         carousel.classList.add('active')
 //     }
 //     let image = document.createElement('img')
-//     image.setAttribute('src',dataAnime[index].image_url)
+//     image.setAttribute('src',dataAnime.data[index].images.jpg.large_image_url)
 //     image.classList.add('d-block')
 //     image.classList.add('image-recommend')
 //     carousel.appendChild(image)
 
 //     slide_anime.appendChild(carousel)
-// }
+}
