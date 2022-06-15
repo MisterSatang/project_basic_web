@@ -36,6 +36,7 @@ function onload(){
     })
 }
 function animeList(dataAnime){
+    show_display_anime()
     for(anime of dataAnime){
         animeTable(anime,"animeTable")
     }
@@ -48,7 +49,6 @@ function dataOutputTable(dataAnime,output){
 
     if(output == "animeTable"){
         dataOutput.image = dataAnime.images.jpg.large_image_url
-        console.log(dataOutput.image)
     }else if(output == "favorite"){
         dataOutput.image = dataAnime.image_url
     }
@@ -58,7 +58,10 @@ function dataOutputTable(dataAnime,output){
 function animeTable(dataAnime,output){
     let dataOutput = dataOutputTable(dataAnime,output)
     // console.log(dataAnime)
-    const display_all_anime = document.getElementById('display_all_anime')
+    
+    const displayAnimeCol = document.getElementById('displayAnimeCol')
+    const displayAnimeFavorite = document.getElementById('displayAnimeFavorite')
+    
     let col = document.createElement('div')
     col.classList.add('col-lg-2',
     'col-md-4',
@@ -104,6 +107,11 @@ function animeTable(dataAnime,output){
     'mx-3')
     btn_detail.innerHTML = 'Detail'
     flex.appendChild(btn_detail)
+
+    btn_detail.addEventListener('click' , function(){
+        showDetailAnime(dataAnime,output);
+    })
+
     let btn_favoite = document.createElement('button')
     btn_favoite.classList.add('btn',
     'btn-warning',
@@ -113,9 +121,7 @@ function animeTable(dataAnime,output){
     let icon_favorite = document.createElement('i')
     icon_favorite.classList.add('bi',
     'bi-heart-fill',
-    'me-1')
-    
-    
+    'me-1')   
     btn_favoite.appendChild(icon_favorite)
     
     let check_active = 0;
@@ -128,10 +134,6 @@ function animeTable(dataAnime,output){
         btn_favoite.innerHTML += 'Favorite'
         check_active = 1;
     }
-
-    btn_detail.addEventListener('click' , function(){
-        showDetailAnime(dataAnime);
-    })
 
     btn_favoite.addEventListener('click', function () {
         if (check_active==0){
@@ -149,7 +151,11 @@ function animeTable(dataAnime,output){
             check_active = 0;
         }
     })
-    display_all_anime.appendChild(col)
+    if(output == 'favorite'){
+        displayAnimeFavorite.appendChild(col)
+    }else{
+        displayAnimeCol.appendChild(col)
+    }
 }
 
 //search anime
@@ -161,31 +167,50 @@ document.getElementById('searchButton').addEventListener('click', () => {
         }).then(dataAnime => {
             let anime = dataAnime.data
             // console.log(anime)
-            display_all_anime.innerHTML = ''
+            displayAnimeCol.innerHTML = ''
             sectionName('Search',search)
             animeList(anime)
         })
 })
 
-function showDetailAnime(dataAnime){
+function dataOutputDetailAnime(dataAnime,output){
+    let dataOutput = {};
+    dataOutput.image
+    dataOutput.rating
+    dataOutput.title = dataAnime.title
+    dataOutput.type = dataAnime.type
+    dataOutput.score = dataAnime.score
+    dataOutput.synopsis = dataAnime.synopsis
+
+    if(output == "animeTable"){
+        dataOutput.image = dataAnime.images.jpg.large_image_url
+        dataOutput.rating = dataAnime.rating
+    }else if(output == "favorite"){
+        dataOutput.image = dataAnime.image_url
+        dataOutput.rating = dataAnime.rated
+    }
+    return dataOutput
+}
+
+function showDetailAnime(dataAnime,output){
+    let dataOutput = dataOutputDetailAnime(dataAnime,output)
     // console.log(dataAnime)
     let imageDetail = document.getElementById('imageDetail')
-    imageDetail.setAttribute('src', dataAnime.images.jpg.large_image_url)
+    imageDetail.setAttribute('src',dataOutput.image)
     let ratingDetail = document.getElementById('ratingDetail')
-    ratingDetail.innerHTML = dataAnime.rating
+    ratingDetail.innerHTML = dataOutput.rating
     let titleDetail = document.getElementById('titleDetail')
-    titleDetail.innerHTML = dataAnime.title
+    titleDetail.innerHTML = dataOutput.title
     let type = document.getElementById('type')
-    type.innerHTML = dataAnime.type
-    let airingDetail = document.getElementById('airingDetail')
-    if (dataAnime.airing == true){
-        airingDetail.innerHTML = 'Currently Airing'
-    }else{
-        airingDetail.innerHTML = 'Finished Airing'
-    }
+    type.innerHTML = dataOutput.type
+    let scoreDetail = document.getElementById('scoreDetail')
+    scoreDetail.innerHTML = dataOutput.score
     let synopsisDetail = document.getElementById('synopsisDetail')
-    synopsisDetail.innerHTML = dataAnime.synopsis
+    synopsisDetail.innerHTML = dataOutput.synopsis
+
+    show_display_detail();
     sectionName('Detail',dataAnime.title)
+    
     
 }
 
@@ -202,8 +227,9 @@ function addFavorite (dataAnime){
         synopsis: dataAnime.synopsis,
         type: dataAnime.type,
         episodes: dataAnime.episodes,
-        score: dataAnime.rating,
+        score: dataAnime.score,
         rated: dataAnime.rating,
+        airing: dataAnime.airing,
     },
     };
     console.log(dataPost)
@@ -222,6 +248,7 @@ function addFavorite (dataAnime){
 
     }).then(data=>{
         console.log('success',data)
+        show_display_anime();
     })
 }
 
@@ -238,6 +265,7 @@ document.getElementById('btn_favorite').addEventListener('click', () => {
         return response.json()
     }).then(data => {
         console.log(data)
+        show_display_Favorite()
         sectionName('Favorite',data.title)
         animefavorite(data)
     })
@@ -247,4 +275,31 @@ document.getElementById('btn_favorite').addEventListener('click', () => {
 document.getElementById('btn_home').addEventListener('click', () => {
     onload()
 })
+
+var display_anime = document.getElementById('display_anime')
+var display_detail = document.getElementById('display_detail')
+
+function hideAll(){
+    display_anime.style.display='none'
+    display_detail.style.display='none'
+    displayAnimeCol.style.display='none'
+    displayAnimeFavorite.style.display='none'
+}
+
+function show_display_anime(){
+    hideAll()
+    display_anime.style.display='block'
+    displayAnimeCol.style.display='inline-flex'
+}
+
+function show_display_Favorite(){
+    hideAll()
+    display_anime.style.display='block'
+    displayAnimeFavorite.style.display='inline-flex'
+}
+
+function show_display_detail(){
+    hideAll()
+    display_detail.style.display='block'
+}
 
