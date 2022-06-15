@@ -42,10 +42,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link fs-6 ms-3 ms-lg-0 text-white" aria-current="page" href="#">Home</a>
+              <a class="nav-link fs-6 ms-3 ms-lg-0 text-white" aria-current="page" id="btn_home">Home</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link fs-6 ms-3 ms-lg-0" href="#">Favorite <div class="d-inline-flex rounded-pill bg-danger px-2">7</div>
+            <li class="nav-item" id="btn_favorite">
+              <a class="nav-link fs-6 ms-3 ms-lg-0" href="#">Favorite<div class="d-inline-flex rounded-pill bg-danger px-2">7</div>
               </a>
             </li>
           </ul>
@@ -66,7 +66,7 @@
     </nav>
     <!-- end navbar -->
     <!-- carouse -->
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img src="https://shorturl.asia/zhvIP" class="image-recommend image" alt="...">
@@ -91,11 +91,12 @@
     <!-- display -->
     <div class="container-fluid p-lg-4 p-md-4 p-2">
         <div class="d-flex flex-grow-1">
-            <div class="d-inline-flex text-white fs-5 text-uppercase text-bold" id="section">Anime on seasons </div>
+            <div class="d-inline-flex text-white fs-5 text-uppercase text-bold" id="section"></div>
             <div class="d-inline-flex flex-grow-1 border-bottom ms-3 mb-3 "></div>
         </div>
         <div class="row" id="display_all_anime"></div>
     </div>
+    <!-- end display -->
    <!-- display My favorite -->
     <div class="container-fluid p-lg-4 p-md-4 p-2">
         <div class="d-flex flex-grow-1">
