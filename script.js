@@ -74,6 +74,11 @@ function animeTable(dataAnime){
     btn_favoite.appendChild(icon_favorite)
     btn_favoite.innerHTML += 'Favorite'
 
+    btn_detail.addEventListener('click' , function(){
+        console.log('detail')
+        showDetailAnime(dataAnime);
+    })
+
     // let check_active = 0;
     // btn_favoite.addEventListener('click', function () {
     //     if (check_active==0){
@@ -104,4 +109,20 @@ document.getElementById('searchButton').addEventListener('click', () => {
         })
 })
 
-
+function showDetailAnime(dataAnime){
+    console.log(dataAnime)
+    let imageDetail = document.getElementById('imageDetail')
+    imageDetail.setAttribute('src', dataAnime.images.jpg.large_image_url)
+    let ratingDetail = document.getElementById('ratingDetail')
+    ratingDetail.innerHTML = dataAnime.rating
+    let titleDetail = document.getElementById('titleDetail')
+    titleDetail.innerHTML = dataAnime.title
+    let airingDetail = document.getElementById('airingDetail')
+    if (dataAnime.airing == true){
+        airingDetail.innerHTML = 'Currently Airing'
+    }else{
+        airingDetail.innerHTML = 'Finished Airing'
+    }
+    let synopsisDetail = document.getElementById('synopsisDetail')
+    synopsisDetail.innerHTML = dataAnime.synopsis
+}
