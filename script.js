@@ -65,35 +65,43 @@ function animeTable(dataAnime){
     btn_favoite.classList.add('btn-warning')
     btn_favoite.classList.add('mx-3')
     btn_favoite.classList.add('my-3')
+    flex.appendChild(btn_favoite)
     let icon_favorite = document.createElement('i')
     icon_favorite.classList.add('bi')
-    icon_favorite.classList.add('bi-heart')
+    icon_favorite.classList.add('bi-heart-fill')
     icon_favorite.classList.add('me-1')
     
-    flex.appendChild(btn_favoite)
     btn_favoite.appendChild(icon_favorite)
     btn_favoite.innerHTML += 'Favorite'
-    
+
+    // let check_active = 0;
+    // btn_favoite.addEventListener('click', function () {
+    //     if (check_active==0){
+    //         console.log('changebtn')
+    //         btn_favoite.style.color = 'red'
+    //         check_active =1;
+    //         console.log(check_active)
+    //     }else {
+    //         console.log('changebtn')
+    //         btn_favoite.style.color = 'black'
+    //         check_active =0;
+    //         console.log(check_active)
+    //     }
+    // })
+
     display_all_anime.appendChild(col)
-// }
-// function countSlidebar(dataAnime){
-//     for(count=0;count<3;count++){
-//         animeSlidebar(count,dataAnime)
-//     }
-// }
-
-// function animeSlidebar(index,dataAnime){
-//     const slide_anime = document.getElementById('slide_anime')
-//     let carousel = document.createElement('div')
-//     carousel.classList.add('carousel-item')
-//     if(index == 0){
-//         carousel.classList.add('active')
-//     }
-//     let image = document.createElement('img')
-//     image.setAttribute('src',dataAnime.data[index].images.jpg.large_image_url)
-//     image.classList.add('d-block')
-//     image.classList.add('image-recommend')
-//     carousel.appendChild(image)
-
-//     slide_anime.appendChild(carousel)
 }
+document.getElementById('searchButton').addEventListener('click', () => {
+    let search = document.getElementById('inputSearch').value
+    fetch(`https://api.jikan.moe/v4/anime?q=${search}`)
+        .then(response => {
+            return response.json()
+        }).then(dataAnime => {
+            let anime = dataAnime.data
+            console.log(anime)
+            display_all_anime.innerHTML = ''
+            animeList(anime)
+        })
+})
+
+
