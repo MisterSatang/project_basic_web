@@ -22,7 +22,7 @@
   </head>
   <body class="color-body" onload="onload()">
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark color-black fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark color-nav fixed-top" id="navbar_active">
       <div class="container-fluid">
         <a class="navbar-brand nav-link disabled" href="#">
           <div class="text-logo text-bold text-white text-uppercase"><i class="bi bi-film me-2"></i>Anime</div>
@@ -91,30 +91,11 @@
     <!-- display -->
     <div class="container-fluid p-lg-4 p-md-4 p-2">
         <div class="d-flex flex-grow-1">
-            <div class="d-inline-flex text-white fs-5 text-uppercase text-bold">Top Anime</div>
+            <div class="d-inline-flex text-white fs-5 text-uppercase text-bold" id="section">Anime on seasons </div>
             <div class="d-inline-flex flex-grow-1 border-bottom ms-3 mb-3 "></div>
         </div>
         <div class="row" id="display_all_anime"></div>
     </div>
-
-    <!-- end display -->
-    <!-- <nav aria-label="Page navigation">
-      <ul class="pagination justify-content-center mb-5">
-        <li class="page-item ">
-          <a class="page-link text-white bg-transparent ">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link text-white bg-transparent">1</a></li>
-        <li class="page-item " aria-current="page">
-          <a class="page-link bg-danger text-white">2</a>
-        </li>
-        <li class="page-item"><a class="page-link text-white bg-transparent">3</a></li>
-        <li class="page-item">
-          <a class="page-link text-white bg-transparent">Next</a>
-        </li>
-      </ul>
-    </nav> -->
-
-    
    <!-- display My favorite -->
     <div class="container-fluid p-lg-4 p-md-4 p-2">
         <div class="d-flex flex-grow-1">
@@ -254,7 +235,7 @@
               <div class="col-lg-8 col-12">
                 <div class="card-body ms-lg-4 ms-0">
                   <div class="d-flex mb-3 align-items-center">
-                    <div class="fs-6 text-secondary text-bold">TV</div>
+                    <div class="fs-6 text-secondary text-bold" id="type">TV</div>
                     <i class="bi bi-circle-fill text-secondary mx-2 fs-7"></i>
                     <div class="fs-6 text-secondary" id="ratingDetail">
                       PG-13 - Teens
