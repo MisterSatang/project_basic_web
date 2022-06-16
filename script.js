@@ -48,7 +48,7 @@ function fetchData(){
     .then((response) => {
         return response.json()
     }).then(dataAnime => {
-        console.log(dataAnime.data)
+        // console.log(dataAnime.data)
         sectionName()
         animeList(dataAnime.data,'animeTable')
     })
@@ -159,15 +159,15 @@ function animeTable(dataAnime,output){
                 for (favorite of dataFavorite) {
                     if (favorite.title == dataAnime.title) {
                         
-                        console.log(favorite)
+                        // console.log(favorite)
                         btn_favoite.style.color = 'red'
                         btn_favoite.innerHTML = ''
                         btn_favoite.appendChild(icon_favorite)
                         btn_favoite.innerHTML += 'Favorite'
                         check_active = 1;
-                        console.log('red')
-                        console.log(favorite.title)
-                        console.log(favorite.id)
+                        // console.log('red')
+                        // console.log(favorite.title)
+                        // console.log(favorite.id)
                         break;         
                     }else{
                         check_active = 0;
@@ -197,7 +197,7 @@ function animeTable(dataAnime,output){
         btn_favoite.innerHTML += 'Favorite'
         check_active = 1;
         btn_favoite.addEventListener('click' , function(){
-            console.log(dataAnime.id)
+            // console.log(dataAnime.id)
             let confirmButton = confirm(`Confirm Delete \n- ${dataAnime.title} form your favorites`)
             if (confirmButton) {
                 deleteAnimeFavorite(dataAnime.id)
@@ -277,9 +277,9 @@ function showDetailAnime(dataAnime,output){
 }
 
 function addFavorite (dataAnime,output){
-    console.log(dataAnime)
+    // console.log(dataAnime)
     
-    console.log('dataPost')
+    // console.log('dataPost')
     const dataPost = {
     id: 642110329,
     movie: {
@@ -294,7 +294,7 @@ function addFavorite (dataAnime,output){
         airing: dataAnime.airing,
     },
     };
-    console.log(dataPost)
+    // console.log(dataPost)
     fetch('https://se104-project-backend.du.r.appspot.com/movies',{
         method: 'POST',
         headers:{
@@ -309,7 +309,7 @@ function addFavorite (dataAnime,output){
         }
 
     }).then(data=>{
-        console.log('success',data)
+        // console.log('success',data)
         if(output == 'animeTable'){
             sectionName('ANIME ON SEASONS','none')
             fetchData();
@@ -335,7 +335,7 @@ function fetchFavorite(){
     .then((response)=>{
         return response.json()
     }).then(data => {
-        console.log(data)
+        // console.log(data)
         show_display_Favorite()
         sectionName('Favorite',data.title)
         animefavorite(data)
@@ -357,7 +357,7 @@ function deleteAnimeFavorite(id) {
         fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
         .then(response => {
             return response.json().then(data => {
-                console.log(data)
+                // console.log(data)
                 fetchFavorite()
             })
         })
