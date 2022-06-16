@@ -3,6 +3,9 @@ window.addEventListener("scroll", e => {
   scrollPos = window.scrollY;
   document.getElementById('navbar_active').style.backgroundColor = 'rgb( 17 , 16 , 16 )';
 });
+document.getElementById('navbar-toggler-click').addEventListener('click', (event) => {
+    document.getElementById('navbar_active').style.backgroundColor = 'rgb( 17 , 16 , 16 )';
+})
 
 // console.log("Start anime Studio")
 // console.log("search all movie")
@@ -26,19 +29,30 @@ function sectionName(section,dataAnime){
 }
 
 function onload(){
-    sectionName('ANIME ON SEASONS','none')
+    hideAll()
+    fetchData();
+    
+}
+function fetchData(){
     fetch('https://api.jikan.moe/v4/seasons/now')
     .then((response) => {
         return response.json()
     }).then(dataAnime => {
         console.log(dataAnime.data)
-        animeList(dataAnime.data)
+        sectionName()
+        animeList(dataAnime.data,'animeTable')
     })
 }
-function animeList(dataAnime){
+
+function animeList(dataAnime,output){
     show_display_anime()
     for(anime of dataAnime){
-        animeTable(anime,"animeTable")
+        if(output == 'search'){
+            animeTable(anime,'search')
+        }else{
+            sectionName('ANIME ON SEASONS','none')
+            animeTable(anime,'animeTable')
+        }
     }
 }
 
@@ -47,20 +61,21 @@ function dataOutputTable(dataAnime,output){
     dataOutput.image
     dataOutput.title = dataAnime.title
 
-    if(output == "animeTable"){
+    if(output == 'animeTable' || output == 'search'){
         dataOutput.image = dataAnime.images.jpg.large_image_url
-    }else if(output == "favorite"){
+    }else if(output == 'favorite'){
         dataOutput.image = dataAnime.image_url
     }
     return dataOutput
 }
 
+
+var displayAnimeCol = document.getElementById('displayAnimeCol')
+var displayAnimeFavorite = document.getElementById('displayAnimeFavorite')
+
 function animeTable(dataAnime,output){
     let dataOutput = dataOutputTable(dataAnime,output)
     // console.log(dataAnime)
-    
-    const displayAnimeCol = document.getElementById('displayAnimeCol')
-    const displayAnimeFavorite = document.getElementById('displayAnimeFavorite')
     
     let col = document.createElement('div')
     col.classList.add('col-lg-2',
@@ -85,7 +100,7 @@ function animeTable(dataAnime,output){
     
     let overlay = document.createElement('div')
     overlay.classList.add('contain',
-    'overlay')
+    'overlay',)
     card.appendChild(overlay)
     let flex = document.createElement('div')
     flex.classList.add('d-flex',
@@ -125,24 +140,28 @@ function animeTable(dataAnime,output){
     btn_favoite.appendChild(icon_favorite)
     
     let check_active = 0;
-    if(output == 'animeTable'){
-        btn_favoite.innerHTML += 'Add avorite'
+    if(output == 'animeTable' || output == 'search'){
+        btn_favoite.innerHTML += 'Add Favorite'
         check_active = 0;
     }
     else if(output == 'favorite'){
         btn_favoite.style.color = 'red'
         btn_favoite.innerHTML += 'Favorite'
         check_active = 1;
+        btn_favoite.addEventListener('click' , function(){
+            console.log(dataAnime.id)
+            deleteAnimeFavorite(dataAnime.id)
+        })        
     }
 
     btn_favoite.addEventListener('click', function () {
         if (check_active==0){
-            addFavorite (dataAnime)
             btn_favoite.style.color = 'red'
             btn_favoite.innerHTML = ''
             btn_favoite.appendChild(icon_favorite)
             btn_favoite.innerHTML += 'Favorite'
             check_active = 1;
+            addFavorite (dataAnime,output)
         }else {
             btn_favoite.style.color = 'black'
             btn_favoite.innerHTML = ''
@@ -151,15 +170,41 @@ function animeTable(dataAnime,output){
             check_active = 0;
         }
     })
+
     if(output == 'favorite'){
         displayAnimeFavorite.appendChild(col)
     }else{
         displayAnimeCol.appendChild(col)
     }
+
+    fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
+    .then(response => {
+        return response.json()
+        .then(dataFavorite => {
+            for (favorite of dataFavorite) {
+                if (favorite.title == dataAnime.title) {
+                    btn_favoite.style.color = 'red'
+                    btn_favoite.innerHTML = ''
+                    btn_favoite.appendChild(icon_favorite)
+                    btn_favoite.innerHTML += 'Favorite'
+                    check_active = 1;
+                }
+            }
+        })
+    })
 }
 
 //search anime
-document.getElementById('searchButton').addEventListener('click', () => {
+document.getElementById('searchButton').addEventListener('click', (event) => {
+    searchAnime()
+})
+document.getElementById('inputSearch').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      searchAnime()
+    }
+});
+
+function searchAnime(){
     let search = document.getElementById('inputSearch').value
     fetch(`https://api.jikan.moe/v4/anime?q=${search}`)
         .then(response => {
@@ -167,11 +212,10 @@ document.getElementById('searchButton').addEventListener('click', () => {
         }).then(dataAnime => {
             let anime = dataAnime.data
             // console.log(anime)
-            displayAnimeCol.innerHTML = ''
             sectionName('Search',search)
-            animeList(anime)
+            animeList(anime,'search')
         })
-})
+}
 
 function dataOutputDetailAnime(dataAnime,output){
     let dataOutput = {};
@@ -214,7 +258,7 @@ function showDetailAnime(dataAnime,output){
     
 }
 
-function addFavorite (dataAnime){
+function addFavorite (dataAnime,output){
     console.log(dataAnime)
     
     console.log('dataPost')
@@ -248,7 +292,12 @@ function addFavorite (dataAnime){
 
     }).then(data=>{
         console.log('success',data)
-        show_display_anime();
+        if(output == 'animeTable'){
+            sectionName('ANIME ON SEASONS','none')
+            fetchData();
+        }else if(output == 'search'){
+            searchAnime()
+        }
     })
 }
 
@@ -259,7 +308,11 @@ function animefavorite(dataAnime){
 }
 
 //display favorite anime
-document.getElementById('btn_favorite').addEventListener('click', () => {
+document.getElementById('btn_favorite').addEventListener('click', (event) => {
+    fetchFavorite()
+})
+
+function fetchFavorite(){
     fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
     .then((response)=>{
         return response.json()
@@ -269,10 +322,34 @@ document.getElementById('btn_favorite').addEventListener('click', () => {
         sectionName('Favorite',data.title)
         animefavorite(data)
     })
-})
+}
+
+
+function deleteAnimeFavorite(id) {
+    fetch(`https://se104-project-backend.du.r.appspot.com/movie?id=642110329&&movieId=${id}`, {
+        method: 'DELETE'
+    }).then(response => {
+        if (response.status === 200) {
+            return response.json()
+        } else {
+            throw Error(response.statusText)
+        }
+    }).then(data => {
+        // alert(`Anime ${data.title} is deleted`)
+        fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
+        .then(response => {
+            return response.json().then(data => {
+                console.log(data)
+                fetchFavorite()
+            })
+        })
+    }).catch(error => {
+        alert('your anime id is not in the database')
+    })
+}
 
 //display home
-document.getElementById('btn_home').addEventListener('click', () => {
+document.getElementById('btn_home').addEventListener('click',(event)=>{
     onload()
 })
 
@@ -281,9 +358,14 @@ var display_detail = document.getElementById('display_detail')
 
 function hideAll(){
     display_anime.style.display='none'
-    display_detail.style.display='none'
+
     displayAnimeCol.style.display='none'
     displayAnimeFavorite.style.display='none'
+
+    displayAnimeCol.innerHTML =''
+    displayAnimeFavorite.innerHTML =''
+    
+    display_detail.style.display='none'
 }
 
 function show_display_anime(){
