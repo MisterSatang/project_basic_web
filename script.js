@@ -181,15 +181,13 @@ function animeTable(dataAnime,output){
         })
         btn_favoite.addEventListener('click', function () {
         if (check_active==0){
-            addFavorite (dataAnime,output)
-            check_active = 1;
+            let confirmButton = confirm(`Confirm Add \n- ${dataAnime.title} form your favorites`)
+            if (confirmButton) {
+                addFavorite (dataAnime,output)
+                alert(`Add anime : ${dataAnime.title} is success`)
+                check_active = 1;
+            }
         }else {
-            // btn_favoite.style.color = 'black'
-            // btn_favoite.innerHTML = ''
-            // btn_favoite.appendChild(icon_favorite)
-            // btn_favoite.innerHTML += 'Add Favorite'
-            // console.log(favorite.id)
-            // check_active = 0;
         }
     })
     }
@@ -200,7 +198,10 @@ function animeTable(dataAnime,output){
         check_active = 1;
         btn_favoite.addEventListener('click' , function(){
             console.log(dataAnime.id)
-            deleteAnimeFavorite(dataAnime.id)
+            let confirmButton = confirm(`Confirm Delete \n- ${dataAnime.title} form your favorites`)
+            if (confirmButton) {
+                deleteAnimeFavorite(dataAnime.id)
+            }
         })        
     }
 
@@ -352,7 +353,7 @@ function deleteAnimeFavorite(id) {
             throw Error(response.statusText)
         }
     }).then(data => {
-        // alert(`Anime ${data.title} is deleted`)
+        alert(`Anime ${data.title} is deleted`)
         fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
         .then(response => {
             return response.json().then(data => {
