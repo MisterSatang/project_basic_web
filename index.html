@@ -26,7 +26,7 @@
       id="navbar_active"
     >
       <div class="container-fluid">
-        <a class="navbar-brand nav-link disabled" href="#">
+        <a class="navbar-brand nav-link" id="logo_home" href="index.html">
           <div class="text-logo text-bold text-white text-uppercase">
             <i class="bi bi-film me-2"></i>Anime
           </div>
@@ -48,7 +48,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
               <a
-                class="nav-link fs-6 ms-3 ms-lg-0 text-white"
+                class="nav-link fs-6 ms-3 ms-lg-0"
                 aria-current="page"
                 id="btn_home"
                 >Home</a
@@ -57,7 +57,12 @@
             <li class="nav-item" id="btn_favorite">
               <a class="nav-link fs-6 ms-3 ms-lg-0" href="#"
                 >Favorite
-                <div class="d-inline-flex rounded-pill bg-danger px-2">7</div>
+                <div
+                  class="d-inline-flex rounded-pill bg-danger px-2"
+                  id="count_favorite"
+                >
+                  0
+                </div>
               </a>
             </li>
           </ul>
@@ -192,11 +197,16 @@
                     In the present day, Shang-Chi works as a valet with his best
                     friend Katy.
                   </div>
-                  <p class="card-text mt-3 text-secondary">
-                    <span class="color-black rounded px-2"
-                      ><i class="bi bi-heart me-2"></i>Add to favorite</span
+                  <div class="mt-3">
+                    <a
+                      class="card-text text-secondary text-decoration-none"
+                      href="index.html"
                     >
-                  </p>
+                      <span class="color-black rounded px-2"
+                        ><i class="bi bi-caret-left-fill"></i>Back</span
+                      >
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

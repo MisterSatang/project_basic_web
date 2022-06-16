@@ -10,6 +10,16 @@ document.getElementById('navbar-toggler-click').addEventListener('click', (event
 // console.log("Start anime Studio")
 // console.log("search all movie")
 
+function countFavorite(){
+    fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
+    .then((response)=>{
+        return response.json()
+    }).then(dataFavorite => {
+        document.getElementById('count_favorite').innerHTML=dataFavorite.length;
+    })
+}
+
+
 //section name 
 function sectionName(section,dataAnime){
     let section_name = document.getElementById('section')
@@ -30,8 +40,8 @@ function sectionName(section,dataAnime){
 
 function onload(){
     hideAll()
-    fetchData();
-    
+    fetchData()
+    countFavorite()
 }
 function fetchData(){
     fetch('https://api.jikan.moe/v4/seasons/now')
@@ -137,14 +147,54 @@ function animeTable(dataAnime,output){
     icon_favorite.classList.add('bi',
     'bi-heart-fill',
     'me-1')   
-    btn_favoite.appendChild(icon_favorite)
+
+
     
-    let check_active = 0;
+    let check_active = 0
     if(output == 'animeTable' || output == 'search'){
-        btn_favoite.innerHTML += 'Add Favorite'
-        check_active = 0;
+        fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
+        .then(response => {
+        return response.json()
+        .then(dataFavorite => {
+                for (favorite of dataFavorite) {
+                    if (favorite.title == dataAnime.title) {
+                        
+                        console.log(favorite)
+                        btn_favoite.style.color = 'red'
+                        btn_favoite.innerHTML = ''
+                        btn_favoite.appendChild(icon_favorite)
+                        btn_favoite.innerHTML += 'Favorite'
+                        check_active = 1;
+                        console.log('red')
+                        console.log(favorite.title)
+                        console.log(favorite.id)
+                        break;         
+                    }else{
+                        check_active = 0;
+                    }
+                }
+                if(check_active == 0){
+                    btn_favoite.appendChild(icon_favorite)
+                    btn_favoite.innerHTML += 'Add Favorite'
+                }
+            })
+        })
+        btn_favoite.addEventListener('click', function () {
+        if (check_active==0){
+            addFavorite (dataAnime,output)
+            check_active = 1;
+        }else {
+            // btn_favoite.style.color = 'black'
+            // btn_favoite.innerHTML = ''
+            // btn_favoite.appendChild(icon_favorite)
+            // btn_favoite.innerHTML += 'Add Favorite'
+            // console.log(favorite.id)
+            // check_active = 0;
+        }
+    })
     }
     else if(output == 'favorite'){
+        btn_favoite.appendChild(icon_favorite)
         btn_favoite.style.color = 'red'
         btn_favoite.innerHTML += 'Favorite'
         check_active = 1;
@@ -154,44 +204,12 @@ function animeTable(dataAnime,output){
         })        
     }
 
-    btn_favoite.addEventListener('click', function () {
-        if (check_active==0){
-            btn_favoite.style.color = 'red'
-            btn_favoite.innerHTML = ''
-            btn_favoite.appendChild(icon_favorite)
-            btn_favoite.innerHTML += 'Favorite'
-            check_active = 1;
-            addFavorite (dataAnime,output)
-        }else {
-            btn_favoite.style.color = 'black'
-            btn_favoite.innerHTML = ''
-            btn_favoite.appendChild(icon_favorite)
-            btn_favoite.innerHTML += 'Add Favorite'
-            check_active = 0;
-        }
-    })
-
     if(output == 'favorite'){
         displayAnimeFavorite.appendChild(col)
     }else{
         displayAnimeCol.appendChild(col)
     }
 
-    fetch('https://se104-project-backend.du.r.appspot.com/movies/642110329')
-    .then(response => {
-        return response.json()
-        .then(dataFavorite => {
-            for (favorite of dataFavorite) {
-                if (favorite.title == dataAnime.title) {
-                    btn_favoite.style.color = 'red'
-                    btn_favoite.innerHTML = ''
-                    btn_favoite.appendChild(icon_favorite)
-                    btn_favoite.innerHTML += 'Favorite'
-                    check_active = 1;
-                }
-            }
-        })
-    })
 }
 
 //search anime
@@ -254,7 +272,6 @@ function showDetailAnime(dataAnime,output){
 
     show_display_detail();
     sectionName('Detail',dataAnime.title)
-    
     
 }
 
@@ -352,11 +369,18 @@ function deleteAnimeFavorite(id) {
 document.getElementById('btn_home').addEventListener('click',(event)=>{
     onload()
 })
+document.getElementById('logo_home').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+      onload()
+    }
+})
+
 
 var display_anime = document.getElementById('display_anime')
 var display_detail = document.getElementById('display_detail')
 
 function hideAll(){
+    countFavorite()
     display_anime.style.display='none'
 
     displayAnimeCol.style.display='none'
@@ -384,4 +408,3 @@ function show_display_detail(){
     hideAll()
     display_detail.style.display='block'
 }
-
